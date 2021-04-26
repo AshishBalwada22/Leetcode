@@ -1,0 +1,31 @@
+https://leetcode.com/problems/subarray-sum-equals-k/
+
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+     /* prefixsum concept
+        sum(i,j) = target //o(1) operation
+        prefixsum(0,j)-prefixsum(0,i-1) = target
+        prefixsum(0,i-1)=prefixsum(0,j) - target
+        j ko fixed kardiya and i-1 ke liye sum find kar raha hu map m
+        if there is corresponding pair exist ,then there will be continous subarray
+        whose sum equal to k
+     */
+        map<int,int>m;
+        for(int i=1;i<nums.size();i++) //create prefixsum array
+        {
+            nums[i]=nums[i]+nums[i-1];
+        }
+        m[0]=1;//maine ek bhi element ko include nahi kiya
+        int count=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            int jthsum=nums[i];
+            int ithsum=jthsum-k;
+            if(m.find(ithsum)!=m.end())
+                count+=m[ithsum];
+            m[jthsum]++;
+        }
+        return count;
+    }
+};
